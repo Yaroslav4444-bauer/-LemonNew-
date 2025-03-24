@@ -75,17 +75,21 @@
 - Контекст рекомендации
 - Источник данных для анализа
 - Флаг принятия рекомендации
+
+9. Ресурс Данных Для Анализа:
+- Последние пройденные уровни
+- Последние уровни, пройденные друзьями
 ----------------------------------------
 
 Агрегат рейтинга:
 
-9. Рейтинг:
+10. Рейтинг:
 - Ссылка на пользователя
 - Общий счёт игрока
 - Место в рейтинге
 - Страница рейтинга
 
-10. Рейтинг Друзей:
+11. Рейтинг Друзей:
 - Ссылка на пользователя
 - Ссылка на друга
 - Общий счёт игрока
@@ -95,23 +99,163 @@
 
 Агрегат чатов:
 
-11. Чат:
+12. Чат:
 - ID
 - ID друга
 - История сообщений
 - Время последнего сообщения
 
-12. Сообщение:
+13. Сообщение:
 - Текст
 - Фото
 - Время
 
 ----------------------------------------
 
-13. Уведомление:
+Агрегат уведомлений:
+
+14. Уведомление:
 - ID
 - ID получателя
 - Тема
 - Краткое описание
 - Время создания
 - Флаг прочтения
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+@startuml
+package "Агрегат Пользователей" {
+    class User {
+        +ID : Integer
+        +Nickname : String
+        +Avatar : Img
+        +Email : String
+        +Password : Char
+        +Friends : List<Friend>
+        +Progress : Progress
+    }
+    class Progress {
+        +UserID : Integer
+        +CompletedLevels : Integer
+        +TotalScore : Integer
+        +Achievements : List<Achievement>
+    }
+    class Friend {
+        +ID : Integer
+        +FriendID : UUID
+        +Nickname : String
+        +Avatar : Img
+        +Progress : Progress
+        +Status : String
+    }
+    class Achievement {
+        +ID : UUID
+        +Name : String
+        +Icon : Img
+        +Description : String
+        +ScorePoints : Integer
+        +IsUnlocked : Bool
+    }
+}
+
+package "Агрегат Уровней" {
+    class RegionMap {
+        +Number : Integer
+        +Name : String
+        +Icon : Img
+        +Levels : List<Level>
+        +IsUnlocked : Bool
+    }
+    class Level {
+        +ID : UUID
+        +Nomber : Integer
+        +SubjectMatter : String
+        +Name : String
+        +Difficulty : Float
+        +Puzzles : List<Puzzle>
+        +ScorePoints : Integer
+        +UserRate : Float
+        +IsCompleted : Bool
+    }
+    class Puzzle {
+        +Type : String
+        +Prehistory : String
+        +AdditionalConditions : List<String>
+        +Options : List<String>
+        +Clues : List<String>
+        +FactInConclusion : String
+        +IsClueUsed : Bool
+    }
+}
+
+package "Агрегат Персонализации" {
+    class Recommendation {
+        +ID : UUID
+        +UserID : Integer
+        +RecommendedID : UUID
+        +RelevanceAssessment : Double
+        +Time : TimeExtended/Date
+        +Context : String
+        +SourceData : List<SourceDataForAnalysis>
+        +IsAccepted : Bool
+    }
+    class SourceDataForAnalysis {
+        +LastLevels<Levels>
+        +LastLevelsFriends<Levels>
+    }
+}
+
+package "Агрегат Рейтинга" {
+    class RatingTotal {
+        +UserID : Integer
+        +TotalScore : Integer
+        +Rank : Integer
+        +Page : Integer
+    }
+    class RatingFriends {
+        +UserID : Integer
+        +FriendID : Integer
+        +TotalScore : Integer
+        +RankFriends : Integer
+        +Page : Integer
+    }
+}
+
+package "Агрегат Чатов" {
+    class Chat {
+        +ID : UUID
+        +FriendID : UUID
+        +Messages : List<Message>
+        +LastTimeOfMessage : TimeExtended/Date
+    }
+    class Message {
+        +Text : String
+        +Foto : Img
+        +Time : TimeExtended/Date
+    }
+}
+
+package "Агрегат Уведомлений" {
+    class Notification {
+        +ID : UUID
+        +UserID : Integer
+        +Topic : String
+        +Description : String
+        +Time : TimeExtended/Date
+        +IsReaded : Bool
+    }
+}
+
+Chat --> Friend : Отображает список чатов для взаимодействия
+Notification --> User : Передаёт уведомление
+Level --> Progress : Увеличивается после прохождения
+Progress --> "Агрегат Рейтинга" : Передаётся в рейтинг
+RegionMap --> User : Даёт выбрать уровень
+Friend --> RatingFriends : Показываются в виде списка по прогрессу
+Recommendation --> Level : Даются рекомендации
+"Агрегат Пользователей" --> SourceDataForAnalysis : Передаёт данные для анализа
+"Агрегат Персонализации" --> "Агрегат Уведомлений" : Новые рекомендации
+"Агрегат Чатов" --> "Агрегат Уведомлений" : Новые сообщения
+
+@enduml
+
