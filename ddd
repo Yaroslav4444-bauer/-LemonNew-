@@ -200,8 +200,8 @@ package "Агрегат Персонализации" {
         +IsAccepted : Bool
     }
     class SourceDataForAnalysis {
-        +LastLevels<Levels>
-        +LastLevelsFriends<Levels>
+        +LastLevels<Level>
+        +LastLevelsFriends<Level>
     }
 }
 
@@ -254,8 +254,16 @@ RegionMap --> User : Даёт выбрать уровень
 Friend --> RatingFriends : Показываются в виде списка по прогрессу
 Recommendation --> Level : Даются рекомендации
 "Агрегат Пользователей" --> SourceDataForAnalysis : Передаёт данные для анализа
-"Агрегат Персонализации" --> "Агрегат Уведомлений" : Новые рекомендации
-"Агрегат Чатов" --> "Агрегат Уведомлений" : Новые сообщения
+"Агрегат Персонализации" --> Notification : Новые рекомендации
+"Агрегат Чатов" --> Notification : Новые сообщения
+Level --|> SourceDataForAnalysis : Данные о последних уровнях
+SourceDataForAnalysis --|> Recommendation : Список данных для анализа
+Achievement  --|> Progress
+Progress --|> User
+Friend --|> User : Список друзей
+Puzzle --|> Level
+Level --|> RegionMap : Список уровней
+Message --|> Chat : Список сообщений
 
 @enduml
 
