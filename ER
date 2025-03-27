@@ -1,0 +1,133 @@
+@startuml
+
+class User {
+    +Number_ID : Integer
+    +Nickname : String
+    +Avatar : Img
+}
+class UserDataReg {
+    +ID : UUID
+    +Email : String
+    +Password_hash : Char
+    +Created_at : TimeExtended/Date
+}
+class Progress {
+        +User_ID : UUID
+        +Completed_levels : Integer
+        +Total_score : Integer
+}
+class Achievement {
+        +ID : UUID
+        +Name : String
+        +Icon : Img
+        +Description : String
+        +Score_points : Integer
+        +IsUnlocked : Bool
+}
+class Friend {
+        +ID : UUID
+        +Number_ID : Integer
+        +Friend_ID : Integer
+        +Nickname : String
+        +Avatar : Img
+        +Progress : Progress
+        +Status : String
+}
+class RegionMap {
+        +Map_ID : UUID
+        +Number : Integer
+        +Name : String
+        +Icon : Img
+        +Levels : List<Level>
+        +Is_unlocked : Bool
+}
+class Level {
+        +ID : UUID
+        +Nomber : Integer
+        +Subject_matter : String
+        +Name : String
+        +Difficulty : Float
+        +Puzzles : List<Puzzle>
+        +Score_points : Integer
+        +User_rate : Float
+        +Is_completed : Bool
+}
+class Puzzle {
+        +ID : UUID
+        +Type : String
+        +Prehistory : String
+        +Additional_conditions : List<String>
+        +Options : List<String>
+        +Clues : List<String>
+        +Fact_in_conclusion : String
+        +Is_clue_used : Bool
+}
+class Recommendation {
+        +ID : UUID
+        +User_ID : UUID
+        +Recommended_ID : UUID
+        +Relevance_assessment : Double
+        +Time : TimeExtended/Date
+        +Context : String
+        +Source_data : List<SourceDataForAnalysis>
+        +Is_accepted : Bool
+}
+class SourceDataForAnalysis {
+        +Last_levels<Level>
+        +Last_lLevels_lriends<Level>
+}
+class RatingTotal {
+        +User_ID : UUID
+        +Total_score : Integer
+        +Rank : Integer
+        +Page : Integer
+}
+class RatingFriends {
+        +User_ID : UUID
+        +Friend_ID : Integer
+        +Total_score : Integer
+        +Rank_friends : Integer
+        +Page : Integer
+}
+class Chat {
+        +ID : UUID
+        +User_ID : UUID
+        +Friend_ID : Integer
+        +Messages : List<Message>
+        +Last_time_of_message : TimeExtended/Date
+}
+class Message {
+        +ID : UUID
+        +Text : String
+        +Foto : Img
+        +Time : TimeExtended/Date
+}
+class Notification {
+        +ID : UUID
+        +User_ID : Integer
+        +Topic : String
+        +Description : String
+        +Time : TimeExtended/Date
+        +Is_readed : Bool
+}
+
+
+User "1 " .. "1 " UserDataReg
+User "1 " .. "1 " Progress
+User "∞ " .. "∞ " Achievement
+User "∞ " .. "∞ " Friend
+User "∞ " .. "∞ " Level
+User "∞ " .. "1 " RatingTotal
+Friend "∞ " .. "1 " RatingFriends
+RegionMap "1 " .. "∞ " Level
+Level "1 " .. "∞ " Puzzle
+SourceDataForAnalysis "1 " .. "∞ " Recommendation
+Level "∞ " .. "∞ " SourceDataForAnalysis
+Friend "1 " .. "1 " Chat
+Chat "1 " .. "∞ " Message
+User "∞ " .. "∞ " Notification : Общие
+User "1 " .. "∞ " Notification : Персональные
+Message "1 " .. "1 " Notification
+Recommendation "1 " .. "1 " Notification
+Recommendation "1 " .. "∞ " Level
+@enduml
