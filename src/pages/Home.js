@@ -6,7 +6,7 @@ function Home() {
     <div className="home">
       <h2>Добро пожаловать в мир русских приключений!</h2>
       <p>Погрузитесь в комедийные ситуации из повседневной жизни России.</p>
-      <Link to="/level">
+      <Link to="/levels">
         <button>Начать игру</button>
       </Link>
     </div>

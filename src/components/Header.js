@@ -1,14 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Menu from './Menu';
 
 function Header() {
   return (
     <header>
-      <h1>Русские приключения</h1>
-      <nav>
-        <Link to="/">Главная</Link>
-        <Link to="/level">Уровень</Link>
-      </nav>
+      <h1>ЮМОРóссия!</h1>
+      <div className='headbuts'>
+        <button className='enter'>Вход</button>
+        <button className='reg'>Регистрация</button>
+      </div>
     </header>
   );
 }
