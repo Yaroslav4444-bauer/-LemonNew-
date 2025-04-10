@@ -12,17 +12,28 @@ body {
 
 main {
   flex: 1;
-  padding: 20px;
+  padding: 0px;
 }
 
 header {
   background-color: #000a24;
   color: white;
-  padding: 10px 20px;
+  padding: 0px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 5px solid #395896
+  border-bottom: 5px solid #395896;
+  font-family: "Monomakh", system-ui;
+}
+
+.ltext {
+  float: left;
+  width: 270px;
+  margin-top: 10px;
+}
+
+.ltxt {
+  float: right;
 }
 
 .headbuts {
@@ -32,6 +43,9 @@ header {
 .enter {
   background-color: rgb(143, 27, 50);
   float: right;
+  font-family: "Neucha", cursive;
+  font-size: 20px;
+  padding: 7px 10px;
 }
 
 .enter:hover {
@@ -46,6 +60,9 @@ header {
   background-color: rgb(143, 27, 50);
   float: left;
   margin-right: 10%;
+  font-family: "Neucha", cursive;
+  font-size: 20px;
+  padding: 7px 14px;
 }
 
 .reg:hover {
@@ -56,24 +73,10 @@ header {
   background-color: #ae4133;
 }
 
-footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
-}
-
-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #45a049;
+@media (max-width: 440px) { 
+  .reg {
+    display: none;
+  }
 }
 
 /* Базовые стили для меню */
@@ -117,6 +120,15 @@ button:hover {
   transition: background-color 0.3s;
 }
 
+.link {
+  color: #2b2f4f;
+}
+
+.link-active {
+  background-color: #d94f3d;
+  color: white;
+}
+
 .menu-list li a:hover {
   background-color: #d94f3d;
   color: white;
@@ -128,7 +140,7 @@ button:hover {
 }
 
 /* Адаптивность для мобильных устройств */
-@media (max-width: 840px) {
+@media (max-width: 808px) {
   .menu-toggle {
     display: block; /* Показываем кнопку на мобильных устройствах */
   }
@@ -148,4 +160,182 @@ button:hover {
   .menu-list.active {
     display: flex; /* Показываем меню при активации */
   }
+}
+
+.home-intro {
+  text-align: center;
+  padding: 20px;
+}
+
+.welcome {
+  margin-top: 32px;
+  font-family: "Monomakh", system-ui;
+  font-size: 56px;
+  color: #d22222;
+}
+
+.welcome2 {
+  margin-top: 35px;
+  font-family: "Monomakh", system-ui;
+  font-size: 30px;
+  color: #5f0726;
+  border-bottom: 2px solid #7b0202;
+  float: center;
+  padding: 5px 5px;
+}
+
+@media (max-width: 640px) {
+  .welcome {
+    margin-top: 16px;
+    font-size: 40px;
+  }
+
+  .welcome2 {
+    font-size: 20px;
+  }
+}
+
+.startgame {
+  margin-top: -12px;
+  min-width: 300px;
+  min-height: 60px;
+  display: inline-flex;
+  font-family: "Monomakh", system-ui;
+  font-size: 28px;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #fbf475;
+  background: #ff005d;
+  background: linear-gradient(
+    45deg,
+    #5600f5, #a605a8, #d90c43, #ffc400
+  );
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(215, 65, 130, 0.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+}
+
+.startgame::before {
+  content: '';
+    border-radius: 1000px;
+    min-width: calc(300px + 12px);
+    min-height: calc(60px + 12px);
+    border: 6px solid #ff005d;
+    box-shadow: 0 0 60px rgba(255, 0, 51, 0.64);
+    position: absolute;
+    background-size: 350%;
+    z-index: -1;
+    animation: glowing 20s linear infinite;
+    transition: opacity .3s ease-in-out;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all .3s ease-in-out 0s;
+}
+
+.startgame:hover, 
+.startgame:focus {
+  color: #fbf475;
+  transform: translateY(-6px);
+}
+
+.startgame:hover::before, 
+.startgame:focus::before {
+  opacity: 1;
+}
+
+.startgame::after {
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 6px solid #ff005d;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+  background: transparent;
+}
+
+.startgame:hover::after, 
+.startgame:focus::after {
+  animation: none;
+  display: none;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 200px;
+    height: 160px;
+    opacity: 0;
+  }
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.info1 {
+  margin-top: -10px;
+  background-color: rgb(104, 20, 37);
+  padding: 0px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.info2 {
+  margin-top: 40px;
+  margin-left: 68px;
+}
+
+.text-intro2 {
+  font-family: "Neucha", cursive;
+  font-size: 28px;
+  color: white;
+}
+
+.titles {
+  font-family: "Monomakh", system-ui;
+  font-size: 32px;
+  color: #d22222;
+}
+
+.about {
+  font-family: "Neucha", cursive;
+  font-size: 24px;
+  color: #020e2a;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
 }
