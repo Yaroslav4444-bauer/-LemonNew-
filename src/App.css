@@ -28,7 +28,7 @@ header {
 
 .ltext {
   float: left;
-  width: 270px;
+  width: 260px;
   margin-top: 10px;
 }
 
@@ -73,9 +73,23 @@ header {
   background-color: #ae4133;
 }
 
-@media (max-width: 440px) { 
+@media (max-width: 530px) { 
+  .headbuts {
+    width: 70px;
+  }
+
   .reg {
     display: none;
+  }
+}
+
+@media (max-width: 380px) { 
+  .logoheader {
+    display: none;
+  }
+
+  .ltext {
+    width: 190px;
   }
 }
 
@@ -313,12 +327,39 @@ button:hover {
 .info2 {
   margin-top: 40px;
   margin-left: 68px;
+  margin-right: 160px;
+}
+
+@media (max-width: 800px) and (min-width: 640px) {
+  .info2 {
+    margin-left: 48px;
+    margin-right: 110px;
+  }
+}
+
+@media (max-width: 640px) and (min-width: 400px) {
+  .info2 {
+    margin-left: 40px;
+    margin-right: 50px;
+  }
 }
 
 .text-intro2 {
   font-family: "Neucha", cursive;
   font-size: 28px;
   color: white;
+}
+
+@media (max-width: 700px) and (min-width: 480px) {
+  .text-intro2 { 
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-intro2 { 
+    font-size: 19px;
+  }
 }
 
 .titles {
@@ -331,6 +372,21 @@ button:hover {
   font-family: "Neucha", cursive;
   font-size: 24px;
   color: #020e2a;
+}
+
+@media (max-width: 400px) {
+  .info2 {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+
+  .titles {
+    font-size: 24px;
+  }
+
+  .about {
+    font-size: 18px;
+  }
 }
 
 footer {

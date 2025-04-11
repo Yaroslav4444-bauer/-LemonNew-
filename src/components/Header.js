@@ -5,7 +5,7 @@ function Header() {
   return (
     <header>
       <div className='ltext'>
-        <img src={logo} alt='humorussia' />
+        <img src={logo} alt='humorussia' className='logoheader'/>
         <h1 className='ltxt'>ЮМОРóссия!</h1>
       </div>
       <div className='headbuts'>

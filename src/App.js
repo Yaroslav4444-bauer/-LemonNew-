@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Menu from './components/Menu';
 import Home from './pages/Home';
 import Level from './pages/Level';
+import Register from './components/Register';
 
 function App() {
   return (
