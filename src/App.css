@@ -41,11 +41,12 @@ header {
 }
 
 .enter {
-  background-color: rgb(143, 27, 50);
+  background-color: #000a24;
+  border: 2px solid #fff;
   float: right;
   font-family: "Neucha", cursive;
   font-size: 20px;
-  padding: 7px 10px;
+  padding: 5px 8px;
 }
 
 .enter:hover {
