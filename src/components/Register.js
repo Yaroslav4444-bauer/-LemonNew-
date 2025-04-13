@@ -21,7 +21,13 @@ function Register({ formType, onClose, onSwitchForm }) { // Принимаем p
   };
 
   const [isOpen, setIsOpen ] = useState(false);
+  const [hasError, setHasError] = useState(false);
   
+  function handleNameChange(event) {
+    setFormData(event.target.value)
+    setHasError(event.target.value.trim().length == 0)
+  }
+
   const toggleForgetPassword = () => {
     setIsOpen(!isOpen);
   };
@@ -39,32 +45,41 @@ function Register({ formType, onClose, onSwitchForm }) { // Принимаем p
                 type="text"
                 placeholder="Погоняло"
                 value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                style={{
+                    backgroundColor: hasError ? '#ffcbcb' : null,
+                }}
+                onChange={((e) => setFormData({ ...formData, username: e.target.value })) && handleNameChange}
               />
-              <box-icon type='solid' name='user'></box-icon>
+              <box-icon className='icons-auth' type='solid' name='user'></box-icon>
             </div>
             <div className='input-box'>
               <input
                 type="email"
                 placeholder="Email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                style={{
+                    backgroundColor: hasError ? '#ffcbcb' : null,
+                }}
+                onChange={((e) => setFormData({ ...formData, username: e.target.value })) && handleNameChange}
               />
-              <box-icon name='envelope' type='solid' ></box-icon>
+              <box-icon className='icons-auth' name='envelope' type='solid' ></box-icon>
             </div>
             <div className='input-box'>
               <input
                 type="password"
                 placeholder="Пароль"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                style={{
+                    backgroundColor: hasError ? '#ffcbcb' : null,
+                }}
+                onChange={((e) => setFormData({ ...formData, username: e.target.value })) && handleNameChange}
               />
-              <box-icon type='solid' name='lock-alt'></box-icon>
+              <box-icon className='icons-auth' type='solid' name='lock-alt'></box-icon>
             </div>
-            <button className='auth-btn' type="submit">Зарегистрироваться</button>
+            <button className='auth-btn' type="submit" disabled={hasError} >Зарегистрироваться</button>
             <p className='text-auth'>Регистрация через Google/VK:</p>
-            <box-icon name='google' type='logo' ></box-icon>
-            <box-icon name='vk' type='logo' ></box-icon>
+            <Link to="#" className='social-link' onClick={toggleForgetPassword && onClose}><box-icon name='google' type='logo' ></box-icon></Link>
+            <Link to="#" className='social-link' onClick={toggleForgetPassword && onClose}><box-icon name='vk' type='logo' ></box-icon></Link>
             <p className='text-auth'>Уже есть аккаунт?</p>
             <button 
               className='auth-btn2' 
@@ -87,26 +102,32 @@ function Register({ formType, onClose, onSwitchForm }) { // Принимаем p
                 type="email"
                 placeholder="Email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                style={{
+                    backgroundColor: hasError ? '#ffcbcb' : null,
+                }}
+                onChange={((e) => setFormData({ ...formData, username: e.target.value })) && handleNameChange}
               />
-              <box-icon name='envelope' type='solid' ></box-icon>
+              <box-icon className='icons-auth' name='envelope' type='solid' ></box-icon>
             </div>
             <div className='input-box'>
               <input
                 type="password"
                 placeholder="Пароль"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                style={{
+                    backgroundColor: hasError ? '#ffcbcb' : null,
+                }}
+                onChange={((e) => setFormData({ ...formData, username: e.target.value })) && handleNameChange}
               />
-              <box-icon type='solid' name='lock-alt'></box-icon>
+              <box-icon className='icons-auth' type='solid' name='lock-alt'></box-icon>
             </div>
             <li>
-                <Link to="/forget-password" onClick={toggleForgetPassword}><strong>Забыли пароль?</strong></Link>
+                <Link to="/forget-password" onClick={toggleForgetPassword && onClose}><strong>Забыли пароль?</strong></Link>
             </li>
-            <button className='auth-btn' type="submit">Войти и играть!</button>
+            <button className='auth-btn' type="submit" disabled={hasError}>Войти и играть!</button>
             <p className='text-auth'>Войти через Google/VK:</p>
-            <box-icon name='google' type='logo' ></box-icon>
-            <box-icon name='vk' type='logo' ></box-icon>
+            <Link to="#" className='social-link' onClick={toggleForgetPassword && onClose}><box-icon name='google' type='logo' ></box-icon></Link>
+            <Link to="#" className='social-link' onClick={toggleForgetPassword && onClose}><box-icon name='vk' type='logo' ></box-icon></Link>
             <p className='text-auth'>Ещё нет аккаунта?</p>
             <button 
               className='auth-btn3' 
