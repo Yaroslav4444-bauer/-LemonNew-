@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'boxicons';
+import axios from 'axios';
 
 function Register({ formType, onClose, onSwitchForm }) { // Принимаем props
   const [formData, setFormData] = useState({ 
@@ -9,14 +10,25 @@ function Register({ formType, onClose, onSwitchForm }) { // Принимаем p
     password: '' 
   });
 
+  const [isLogin, setIsLogin] = useState(false); // Флаг для переключения между формами
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // await axios.post('http://localhost:5000/api/register', formData);
-      alert('Регистрация успешна!');
-      onClose(); // Закрываем модальное окно после регистрации
+    if (isLogin) {
+        // Вход
+        const response = await axios.post('http://localhost:8000/api/login', {
+        email: formData.email,
+        password: formData.password
+        });
+        alert(response.data.message);
+    } else {
+        // Регистрация
+        const response = await axios.post('http://localhost:8000/api/register', formData);
+        alert(response.data.message);
+    }
     } catch (error) {
-      alert('Ошибка регистрации: ' + error.response?.data?.message);
+    alert('Ошибка: ' + error.response?.data?.detail);
     }
   };
 
