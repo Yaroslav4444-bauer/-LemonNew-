@@ -5,8 +5,8 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBi
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
 from passlib.context import CryptContext
-from datetime import datetime
-from jose import jwt
+from datetime import datetime, timedelta
+from jose import jwt, JWTError
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
@@ -80,9 +80,14 @@ def hash_password(password: str):
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
-# Функция для создания JWT токена
-def create_access_token(data: dict):
-    return jwt.encode(data, "SECRET_KEY", algorithm="HS256")
+# Настройки JWT
+SECRET_KEY = "your-secret-key-here"  # В продакшене используйте безопасный ключ
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+# Модель для токена
+class TokenData(BaseModel):
+    email: str | None = None
 
 # Зависимость для получения сессии БД
 def get_db():
@@ -91,6 +96,45 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# Функция для получения текущего пользователя
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+) -> User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        # Декодируем JWT токен
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            raise credentials_exception
+        token_data = TokenData(email=email)
+    except JWTError:
+        raise credentials_exception
+
+    # Получаем пользователя из базы данных
+    user = db.query(User).filter(User.email == token_data.email).first()
+    if user is None:
+        raise credentials_exception
+    return user
+
+# Обновленная функция создания токена
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
 
 # Регистрация пользователя
 @app.post("/register", status_code=status.HTTP_201_CREATED)
@@ -166,7 +210,13 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token = create_access_token(data={"sub": user.email})
+    # Создаем токен с временем жизни
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.email},
+        expires_delta=access_token_expires
+    )
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -177,7 +227,41 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     }
 
 # Эндпоинт для получения данных пользователя
+class UserProfile(BaseModel):
+    iduser: int
+    email: str
+    nickname: str
+    created_at: datetime
 
+    class Config:
+        from_attributes = True
+
+@app.get("/user/{user_id}", response_model=UserProfile)
+async def get_user_profile(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    # Проверяем, что пользователь запрашивает свой профиль
+    if current_user.iduser != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You can only view your own profile"
+        )
+
+    user = db.query(User).filter(User.iduser == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    return UserProfile(
+        iduser=user.iduser,
+        email=user.email,
+        nickname=user.nickname,
+        created_at=user.created_at
+    )
 
 # Обработка ошибок подключения к БД
 @app.on_event("startup")

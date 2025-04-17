@@ -9,7 +9,7 @@ function Home() {
         <div className="home-intro">
             {isAuthenticated ? (
                 <>
-                    <p className='welcome'>Привет, {user.email}!</p>
+                    <p className='welcome'>Привет, {user.nickname}!</p>
                 </>
             ) : null}
             <p className='welcome'>Добро пожаловать в мир русских приключений!</p>

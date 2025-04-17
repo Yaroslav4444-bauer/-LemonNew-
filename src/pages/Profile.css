@@ -1,0 +1,60 @@
+/* src/styles/Profile.css */
+.profile-container {
+    max-width: 800px;
+    margin: left;
+    padding: 20px;
+}
+
+.profile-info {
+    background: linear-gradient(
+    45deg,
+    #5971f9, #f6faff
+  );
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.profile-field {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-field:last-child {
+    border-bottom: none;
+}
+
+.profile-field label {
+    font-weight: bold;
+    display: inline-block;
+    width: 200px;
+    color: #000a24;
+    font-family: "Neucha", cursive;
+    font-size: 25px;
+}
+
+.profile-field span {
+    margin-left: 10px;
+    font-family: "Neucha", cursive;
+    font-size: 25px;
+    color: #7a0202;
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+.error {
+    color: #f44336;
+}
+
+.profile-title {
+    font-family: "Monomakh", system-ui;
+    font-size: 40px;
+    margin-left: 10px;
+    color: #681425;
+}
