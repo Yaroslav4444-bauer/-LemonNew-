@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 function Home() {
+  const { isAuthenticated, user} = useAuth();
   return (
     <div>
         <div className="home-intro">
+            {isAuthenticated ? (
+                <>
+                    <p className='welcome'>Привет, {user.email}!</p>
+                </>
+            ) : null}
             <p className='welcome'>Добро пожаловать в мир русских приключений!</p>
             <Link to="/levels">
                 <button className='startgame'>Начать игру</button>

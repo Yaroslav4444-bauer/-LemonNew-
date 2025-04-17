@@ -1,27 +1,21 @@
+// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Menu from './components/Menu';
-import Home from './pages/Home';
-import Level from './pages/Level';
-import Register from './components/Register';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 function App() {
+  // Проверяем наличие токена для определения статуса аутентификации
+  const isAuthenticated = localStorage.getItem('token') !== null;
+
   return (
-    <Router>
-      <div className="app">
-        <Header />
-        <Menu />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/levels" element={<Level />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <AppRoutes isAuthenticated={isAuthenticated} />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -170,8 +170,14 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "nickname": user.nickname
+        "nickname": user.nickname,
+        "email": user.email,
+        "iduser": user.iduser,
+        "created_at": user.created_at
     }
+
+# Эндпоинт для получения данных пользователя
+
 
 # Обработка ошибок подключения к БД
 @app.on_event("startup")

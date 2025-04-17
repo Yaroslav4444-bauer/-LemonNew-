@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import 'boxicons';
 import axios from 'axios';
 
@@ -10,6 +10,7 @@ function Register({ formType, onClose, onSwitchForm }) {
     password: '' 
   });
 
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState('');
 
@@ -33,6 +34,10 @@ function Register({ formType, onClose, onSwitchForm }) {
         // Сохраняем токен
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('nickname', response.data.nickname);
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('iduser', response.data.iduser);
+        localStorage.setItem('created_at', response.data.created_at);
+        navigate('/profile');
         alert('Успешный вход!');
         onClose();
       } else {
@@ -77,6 +82,10 @@ function Register({ formType, onClose, onSwitchForm }) {
   const toggleForgetPassword = () => {
     setIsOpen(!isOpen);
   };
+
+  const changeForm = () => {
+    setIsLogin(!isLogin);
+  }
 
   return (
     <div className='a-modal'>
@@ -137,7 +146,7 @@ function Register({ formType, onClose, onSwitchForm }) {
             <p className='text-auth'>Уже есть аккаунт?</p>
             <button 
               className='auth-btn2' 
-              onClick={() => onSwitchForm('login')}
+              onClick={() => onSwitchForm('login') && {changeForm}}
             >
               Войти и играть!
             </button>
@@ -184,6 +193,7 @@ function Register({ formType, onClose, onSwitchForm }) {
             <button 
               className='auth-btn' 
               type="submit" 
+              onClick={changeForm}
               disabled={hasError.email || hasError.password || 
                        !formData.email.trim() || !formData.password.trim()}
             >
